@@ -1,20 +1,23 @@
 # Vinora — Membrane Wine Dealcoholization
 
-Scientific feasibility report and interactive business/process calculator for removing ethanol from finished wine to a user-selectable **0.5–5% ABV**, using membrane technology suited to both home devices and industrial producers.
+Scientific feasibility report, process engineering detail, and interactive business/process calculator for removing ethanol from finished wine to a user-selectable **0.5–5% ABV**.
 
 ## Live page
 
-**https://cdn.jsdelivr.net/gh/rosenoern13/AlchoholFreeWine@cursor/vinora-dealcoholization-report-0749/index.html**
+**https://cdn.jsdelivr.net/gh/rosenoern13/AlchoholFreeWine@cursor/vinora-science-investor-deck-0749/index.html**
 
-Mirror: [raw.githack](https://raw.githack.com/rosenoern13/AlchoholFreeWine/cursor/vinora-dealcoholization-report-0749/index.html)
+Mirror: [raw.githack](https://raw.githack.com/rosenoern13/AlchoholFreeWine/cursor/vinora-science-investor-deck-0749/index.html)
 
-After GitHub Pages is enabled on the repo: https://rosenoern13.github.io/AlchoholFreeWine/
+Or open `index.html` locally.
 
 ## What’s inside
 
-- Feasibility assessment focused on osmotic distillation (dialysis-style hollow-fiber contactors with peristaltic recirculation), plus pervaporation, RO, and NF comparisons
-- Published membrane flux rates from peer-reviewed wine experiments
-- Interactive calculator: membrane area, cycle time, depth derating, and Year-1 home / industrial economics
+- **Science** — osmotic distillation as the preferred dialysis-style platform; RO/NF/PV compared
+- **Membranes & vendors** — Solventum Liqui-Cel, DeltaMem/Pervap, PVDF OEMs, RO/NF suppliers, turnkey competitors
+- **Process engineering** — SVG flow diagrams with pressures, flows, temperatures; home & industrial duty points
+- **Pervaporation deep dive** — PERVAP™ 4060 operating window, vacuum/condenser path, OD→PV hybrid
+- **Calculator** — membrane area, cycle time, depth derating, Year-1 economics
+- **Investor deck** — 8 interactive slides (ask, market, unit economics, use of funds, returns, risks)
 
 ## Local preview
 
