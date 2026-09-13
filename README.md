@@ -8,7 +8,7 @@ Scientific feasibility report and interactive business/process calculator for re
 
 Mirror: [raw.githack](https://raw.githack.com/rosenoern13/AlchoholFreeWine/cursor/vinora-dealcoholization-report-0749/index.html)
 
-After GitHub Pages is enabled on the repo: https://rosenoern13.github.io/AlchoholFreeWine/
+Or open `index.html` locally in any browser.
 
 ## What’s inside
 
