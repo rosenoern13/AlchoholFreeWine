@@ -4,9 +4,11 @@ Scientific feasibility report and interactive business/process calculator for re
 
 ## Live page
 
-**https://rosenoern13.github.io/AlchoholFreeWine/**
+**https://cdn.jsdelivr.net/gh/rosenoern13/AlchoholFreeWine@cursor/vinora-dealcoholization-report-0749/index.html**
 
-(Also open `index.html` locally in any browser.)
+Mirror: [raw.githack](https://raw.githack.com/rosenoern13/AlchoholFreeWine/cursor/vinora-dealcoholization-report-0749/index.html)
+
+After GitHub Pages is enabled on the repo: https://rosenoern13.github.io/AlchoholFreeWine/
 
 ## What’s inside
 
