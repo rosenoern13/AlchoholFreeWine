@@ -565,6 +565,203 @@
       padding-top: 1rem;
       border-top: 1px solid var(--line);
     }
+
+    /* Deep-dive additions */
+    .nav-links { flex-wrap: wrap; justify-content: flex-end; }
+    @media (max-width: 900px) {
+      .nav-links a { font-size: 0.78rem; }
+    }
+    .spec-grid {
+      display: grid;
+      gap: 0.85rem;
+      margin: 1.75rem 0;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+    .spec {
+      padding: 1rem 0.9rem;
+      background: rgba(0,0,0,0.28);
+      border-top: 2px solid var(--wine);
+    }
+    .spec .n {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: var(--gold);
+      font-variant-numeric: tabular-nums;
+      line-height: 1.15;
+    }
+    .spec .l {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.35rem;
+    }
+    .vendor-grid {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+    .vendor {
+      padding: 1.25rem;
+      background: rgba(255,246,239,0.03);
+      border: 1px solid var(--line);
+    }
+    .vendor h4 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 500;
+      margin-bottom: 0.35rem;
+    }
+    .vendor .role {
+      font-size: 0.75rem;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 0.65rem;
+    }
+    .vendor p { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.65rem; }
+    .vendor ul { margin: 0; padding-left: 1.1rem; color: var(--muted); font-size: 0.85rem; }
+    .vendor li { margin-bottom: 0.25rem; }
+
+    .diagram {
+      margin: 1.75rem 0;
+      padding: 1.25rem;
+      background: rgba(0,0,0,0.32);
+      border: 1px solid var(--line);
+      overflow-x: auto;
+    }
+    .diagram figcaption {
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-top: 0.85rem;
+      line-height: 1.4;
+    }
+    .diagram svg { display: block; width: 100%; height: auto; max-width: 980px; margin-inline: auto; }
+    .diagram svg text { font-family: var(--font-body); }
+
+    .param-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 1.25rem 0; }
+    .param-table th, .param-table td {
+      text-align: left; padding: 0.7rem 0.6rem; border-bottom: 1px solid var(--line); vertical-align: top;
+    }
+    .param-table th {
+      color: var(--gold); font-weight: 500; font-size: 0.7rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .param-table td { color: var(--muted); }
+    .param-table td:first-child { color: var(--ink); font-weight: 500; }
+    .param-table .num { color: var(--gold) !important; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+    .pv-steps {
+      display: grid; gap: 1rem; margin: 1.5rem 0;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      counter-reset: step;
+    }
+    .pv-steps article {
+      padding: 1.1rem; background: var(--surface); border-top: 2px solid var(--gold-dim);
+      position: relative;
+    }
+    .pv-steps article::before {
+      counter-increment: step;
+      content: "0" counter(step);
+      display: block; font-family: var(--font-display); color: var(--gold);
+      font-size: 1.1rem; margin-bottom: 0.4rem;
+    }
+    .pv-steps h4 { font-size: 1rem; margin-bottom: 0.4rem; font-weight: 500; }
+    .pv-steps p { color: var(--muted); font-size: 0.88rem; }
+
+    /* Investor deck */
+    #investors {
+      border-top: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(212,165,116,0.06), transparent 30%);
+    }
+    .deck-shell {
+      margin-top: 1.5rem;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,0.35);
+      overflow: hidden;
+    }
+    .deck-toolbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      padding: 0.85rem 1.1rem; border-bottom: 1px solid var(--line); flex-wrap: wrap;
+    }
+    .deck-toolbar .title {
+      font-family: var(--font-display); font-size: 1.05rem; font-weight: 500;
+    }
+    .deck-controls { display: flex; align-items: center; gap: 0.5rem; }
+    .deck-controls button {
+      background: transparent; border: 1px solid var(--line); color: var(--ink);
+      padding: 0.45rem 0.85rem; font-family: var(--font-body); cursor: pointer; font-size: 0.85rem;
+    }
+    .deck-controls button:hover { border-color: var(--gold); color: var(--gold); }
+    .deck-controls .pos { color: var(--muted); font-size: 0.82rem; min-width: 4.5rem; text-align: center; }
+    .slides { position: relative; min-height: 420px; }
+    .slide {
+      display: none; padding: 2rem 1.5rem 2.25rem; animation: rise 0.4s ease both;
+    }
+    .slide.active { display: block; }
+    .slide .eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gold-dim); margin-bottom: 0.75rem; font-weight: 500;
+    }
+    .slide h3 {
+      font-family: var(--font-display); font-size: clamp(1.6rem, 3.5vw, 2.35rem);
+      font-weight: 500; letter-spacing: -0.02em; line-height: 1.15;
+      margin-bottom: 0.85rem; max-width: 22ch;
+    }
+    .slide .sub { color: var(--muted); max-width: 40rem; margin-bottom: 1.5rem; font-size: 1.02rem; }
+    .slide-metrics {
+      display: grid; gap: 0.75rem;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      margin: 1.25rem 0;
+    }
+    .slide-metrics .m {
+      padding: 1rem; background: rgba(255,246,239,0.04); border-top: 2px solid var(--wine-bright);
+    }
+    .slide-metrics .m .big {
+      font-family: var(--font-display); font-size: 1.7rem; color: var(--gold); line-height: 1.1;
+    }
+    .slide-metrics .m .lbl { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
+    .slide ul.bullets { list-style: none; display: grid; gap: 0.65rem; max-width: 42rem; }
+    .slide ul.bullets li {
+      padding-left: 1.1rem; position: relative; color: var(--muted); font-size: 0.98rem;
+    }
+    .slide ul.bullets li::before {
+      content: ""; position: absolute; left: 0; top: 0.55rem;
+      width: 6px; height: 6px; background: var(--wine-bright);
+    }
+    .funds {
+      display: grid; gap: 0.55rem; margin-top: 1rem; max-width: 36rem;
+    }
+    .funds .row {
+      display: grid; grid-template-columns: 8.5rem 1fr 3.5rem; gap: 0.6rem; align-items: center;
+      font-size: 0.85rem;
+    }
+    .funds .row span:first-child { color: var(--muted); }
+    .funds .row .track { height: 10px; background: rgba(255,255,255,0.06); overflow: hidden; }
+    .funds .row .fill { height: 100%; background: linear-gradient(90deg, var(--wine), var(--gold)); }
+    .funds .row .pct { text-align: right; color: var(--gold); font-variant-numeric: tabular-nums; }
+    .slide-note { font-size: 0.78rem; color: var(--muted); margin-top: 1.25rem; max-width: 40rem; }
+    .compare {
+      display: grid; gap: 1rem; margin-top: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .compare .col {
+      padding: 1.1rem; border: 1px solid var(--line); background: rgba(255,246,239,0.03);
+    }
+    .compare .col h4 { font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .compare .col p { color: var(--muted); font-size: 0.9rem; }
+
+    .mech {
+      display: grid; gap: 1.25rem; margin: 1.5rem 0;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+    .mech article {
+      padding: 1.2rem; background: rgba(0,0,0,0.25); border-left: 2px solid var(--gold);
+    }
+    .mech h4 { font-family: var(--font-display); font-size: 1.15rem; margin-bottom: 0.45rem; font-weight: 500; }
+    .mech p { color: var(--muted); font-size: 0.9rem; }
+
   </style>
 </head>
 <body>
@@ -573,8 +770,11 @@
       <a class="logo" href="#">Vinora<span>.</span></a>
       <ul class="nav-links">
         <li><a href="#science">Science</a></li>
-        <li><a href="#rates">Rates</a></li>
+        <li><a href="#membranes">Membranes</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#pervaporation">Pervaporation</a></li>
         <li><a href="#calculator">Calculator</a></li>
+        <li><a href="#investors">Investors</a></li>
         <li><a href="#sources">Sources</a></li>
       </ul>
     </div>
@@ -591,7 +791,7 @@
       <p>Pressure-circulated membrane contactors that bring finished wine to a user-selected 0.5–5% ABV—grounded in published flux data.</p>
       <div class="cta-row">
         <a class="btn btn-primary" href="#calculator">Open the calculator</a>
-        <a class="btn btn-ghost" href="#science">Read the feasibility</a>
+        <a class="btn btn-ghost" href="#investors">Investor deck</a>
       </div>
     </div>
   </header>
@@ -639,6 +839,30 @@
           <p class="status warn">Watch-outs</p>
           <h3>Quality &amp; ops</h3>
           <p>Ester losses rise with deeper cuts; cold OD helps. Fouling, wetting of hydrophobic pores, and strip disposal dominate OPEX. Sensory validation per varietal is mandatory before SKU launch.</p>
+        </article>
+      </div>
+
+      <div class="spec-grid">
+        <div class="spec"><div class="n">0.11–0.17</div><div class="l">L·m⁻²·h⁻¹ EtOH (OD)</div></div>
+        <div class="spec"><div class="n">10–21°C</div><div class="l">Preferred OD temp</div></div>
+        <div class="spec"><div class="n">0.3–0.5 bar</div><div class="l">ΔP wine &gt; strip</div></div>
+        <div class="spec"><div class="n">~1–10 mbar</div><div class="l">PV permeate vacuum</div></div>
+        <div class="spec"><div class="n">20–35 bar</div><div class="l">RO / NF feed</div></div>
+        <div class="spec"><div class="n">0.5–5%</div><div class="l">Selectable ABV</div></div>
+      </div>
+
+      <div class="mech">
+        <article>
+          <h4>Driving force</h4>
+          <p>In osmotic distillation, ethanol moves as vapor through gas-filled hydrophobic pores because its partial pressure is higher on the wine side than on the strip-water side. No large hydraulic transmembrane pressure is required—only enough ΔP to keep wine from wetting into the strip circuit.</p>
+        </article>
+        <article>
+          <h4>Why peristaltic loops</h4>
+          <p>Peristaltic (or sanitary centrifugal) pumps set independent wine and strip recirculation rates, enable gentle shear for home volumes, and match published lab/pilot OD setups that already use dual peristaltic loops on hollow-fiber contactors.</p>
+        </article>
+        <article>
+          <h4>Limit to 0.5% ABV</h4>
+          <p>As wine ABV falls, driving force shrinks and strip water approaches equilibrium. Multi-cycle strip refresh (or continuous fresh strip / strip regeneration) is mandatory for deep dealcoholization—demonstrated to ~0.5% v/v in OD literature.</p>
         </article>
       </div>
     </div>
@@ -717,6 +941,301 @@
 
       <div class="prose" style="margin-top: 1.5rem;">
         <p><strong>Modeling note.</strong> Osmotic-distillation ethanol flux declines as wine ABV falls and as strip water approaches equilibrium. The calculator applies a depth derating (mild → deep) so batch times to 0.5% are not naïvely extrapolated from −3% literature points. RO/NF paths size area from diafiltration volume <em>V·ln(C₀/C<sub>f</sub>)</em> with ethanol treated as highly permeable—consistent with low measured ethanol rejection in wine NF/RO dealcoholization literature.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="membranes">
+    <div class="wrap">
+      <p class="section-label">Membranes &amp; vendors</p>
+      <h2>Buyable modules, not lab curiosities.</h2>
+      <p class="lede">Vinora’s preferred stack starts with hydrophobic hollow-fiber contactors already documented for wine alcohol reduction, then adds organophilic pervaporation where vacuum recovery of ethanol is valuable.</p>
+
+      <div class="split split-2">
+        <div class="prose">
+          <p><strong>Primary recommendation — osmotic distillation contactors.</strong> Microporous polypropylene (PP) X50-class hollow fibers in Liqui-Cel–style Extra-Flow housings are explicitly recommended by the manufacturer for wine alcohol reduction: wine on the shell side, strip water in the lumen, counter-current recirculation, near room temperature and atmospheric pressure.</p>
+          <p><strong>Upgrade path — PVDF / superhydrophobic HF.</strong> Research modules with higher porosity and “lotus-effect” PVDF surfaces have shown ~0.17 L·m⁻²·h⁻¹ ethanol flux vs ~0.11–0.13 for PP at the same −3% ABV cut, with better aroma retention—attractive for premium industrial skids once food-contact supply is locked.</p>
+          <p><strong>Selective ethanol cut — organophilic PV.</strong> Dense PDMS composite membranes (PERVAP™ 4060 family, now supplied by DeltaMem AG / Pervap) preferentially permeate ethanol under vacuum. Ideal as a strip regenerator or as a premium home/pilot path when a vacuum pump is acceptable.</p>
+        </div>
+        <div class="prose">
+          <p><strong>High-pressure industrial alternatives.</strong> Thin-film RO/NF (e.g. ACM3, TS80-class) at 25–35 bar remain the workhorses of many winery “alcohol adjustment” skids, often hybridized with OD on the permeate. They are excellent for producers who already run high-pressure filtration; they are a weak fit for a countertop product.</p>
+          <p><strong>Food-contact &amp; sanitization.</strong> Prefer stainless housings where hot-water sanitization to ~85°C is required. PP housings are common for trials but must not be hot-water sanitized. Pre-filter wine and strip to ≤5 µm absolute to limit fouling.</p>
+        </div>
+      </div>
+
+      <div class="vendor-grid">
+        <article class="vendor">
+          <div class="role">OD contactor · preferred</div>
+          <h4>Solventum Liqui-Cel™ (ex-3M)</h4>
+          <p>Commercial hollow-fiber membrane contactors with published wine alcohol-reduction application guidance (X50 PP fiber).</p>
+          <ul>
+            <li>Models: EXF 2.5×8, 4×13, 4×28, 10×28</li>
+            <li>Wine flows (guide): 0.05–100 gpm depending on size</li>
+            <li>Shell = wine; lumen = strip water; ΔP strip 0.3–0.5 bar lower</li>
+          </ul>
+        </article>
+        <article class="vendor">
+          <div class="role">Pervaporation membrane</div>
+          <h4>DeltaMem AG / Pervap (PERVAP™)</h4>
+          <p>Organophilic PDMS composites (PERVAP™ 4060 lineage, formerly Sulzer Chemtech) used in published red-wine PV trials.</p>
+          <ul>
+            <li>Dense selective layer on PAN support</li>
+            <li>Feed ~20–50°C wine; permeate ~1–10 mbar abs.</li>
+            <li>Lab/pilot cells + industrial plate-and-frame options</li>
+          </ul>
+        </article>
+        <article class="vendor">
+          <div class="role">PVDF / specialty HF</div>
+          <h4>Polymem · Zena · OEM HF</h4>
+          <p>Superhydrophobic PVDF and alternate PP hollow-fiber modules used in aroma-preserving OD wine studies.</p>
+          <ul>
+            <li>Higher porosity / pore size → higher EtOH flux</li>
+            <li>Qualify food-contact &amp; extractables early</li>
+            <li>Good candidates for Vinora industrial “aroma-first” skids</li>
+          </ul>
+        </article>
+        <article class="vendor">
+          <div class="role">RO / NF &amp; hybrids</div>
+          <h4>DuPont · Mann+Hummel · KSS</h4>
+          <p>Spiral-wound RO/NF elements for winery alcohol adjustment; often paired with OD or distillation on permeate.</p>
+          <ul>
+            <li>Operating pressure typically 20–35 bar</li>
+            <li>Wine permeate flux ~1–9 L·m⁻²·h⁻¹ (RO→NF)</li>
+            <li>Industrial only for Vinora roadmap</li>
+          </ul>
+        </article>
+        <article class="vendor">
+          <div class="role">Turnkey dealcoholization OEMs</div>
+          <h4>Omnia · Bucher · BevZero · UnRewined</h4>
+          <p>Competitive / partner landscape for industrial wine NA/low-ABV lines (membrane + thermal hybrids).</p>
+          <ul>
+            <li>Omnia Libero / Reduco membrane-assisted systems</li>
+            <li>BevZero / Tomsa ClearAlc vacuum distillation</li>
+            <li>UnRewined low-pressure membrane osmosis positioning</li>
+          </ul>
+        </article>
+        <article class="vendor">
+          <div class="role">Fluidics · home BOM</div>
+          <h4>Watson-Marlow · Cole-Parmer · sanitary fittings</h4>
+          <p>Food-grade peristaltic pumps, tubing, and chill plates for dual-loop home and pilot systems.</p>
+          <ul>
+            <li>Independent wine &amp; strip flow setpoints</li>
+            <li>FKM / EPDM seals per contactor datasheet</li>
+            <li>N₂ blanketing on wine tank to limit O₂ pickup</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <p class="section-label">Process engineering</p>
+      <h2>Pressures, flows, and temperatures that actually run.</h2>
+      <p class="lede">Below are reference duty points for Vinora’s two flagship architectures—home OD and industrial OD—plus a pervaporation variant. Numbers combine manufacturer wine-application guidance with peer-reviewed OD/PV operating windows.</p>
+
+      <figure class="diagram" aria-label="Osmotic distillation process flow diagram">
+        <svg viewBox="0 0 960 420" xmlns="http://www.w3.org/2000/svg" role="img">
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#d4a574"/>
+            </marker>
+          </defs>
+          <rect x="40" y="60" width="130" height="90" fill="#1a1014" stroke="#c4454d" stroke-width="1.5"/>
+          <text x="105" y="100" text-anchor="middle" fill="#f6ece4" font-size="14">Wine tank</text>
+          <text x="105" y="120" text-anchor="middle" fill="#b9a59a" font-size="11">N₂ blanketed</text>
+          <text x="105" y="138" text-anchor="middle" fill="#d4a574" font-size="11">10–21 °C</text>
+
+          <rect x="40" y="270" width="130" height="90" fill="#1a1014" stroke="#d4a574" stroke-width="1.5"/>
+          <text x="105" y="310" text-anchor="middle" fill="#f6ece4" font-size="14">Strip water</text>
+          <text x="105" y="330" text-anchor="middle" fill="#b9a59a" font-size="11">DI / RO water</text>
+          <text x="105" y="348" text-anchor="middle" fill="#d4a574" font-size="11">≤5 µm filtered</text>
+
+          <rect x="280" y="145" width="110" height="70" rx="2" fill="#2a151a" stroke="#b9a59a" stroke-width="1"/>
+          <text x="335" y="175" text-anchor="middle" fill="#f6ece4" font-size="13">Peristaltic</text>
+          <text x="335" y="195" text-anchor="middle" fill="#b9a59a" font-size="11">wine pump</text>
+
+          <rect x="280" y="285" width="110" height="60" rx="2" fill="#2a151a" stroke="#b9a59a" stroke-width="1"/>
+          <text x="335" y="312" text-anchor="middle" fill="#f6ece4" font-size="13">Peristaltic</text>
+          <text x="335" y="330" text-anchor="middle" fill="#b9a59a" font-size="11">strip pump</text>
+
+          <rect x="480" y="120" width="220" height="200" fill="#1a1014" stroke="#c4454d" stroke-width="2"/>
+          <text x="590" y="150" text-anchor="middle" fill="#f6ece4" font-size="15">Hollow-fiber contactor</text>
+          <text x="590" y="172" text-anchor="middle" fill="#d4a574" font-size="12">PP X50 / PVDF HF</text>
+          <line x1="510" y1="200" x2="670" y2="200" stroke="#8b2e3b" stroke-width="8" stroke-linecap="round" opacity="0.85"/>
+          <text x="590" y="230" text-anchor="middle" fill="#b9a59a" font-size="12">Shell: wine</text>
+          <text x="590" y="252" text-anchor="middle" fill="#b9a59a" font-size="12">Lumen: strip H₂O</text>
+          <text x="590" y="280" text-anchor="middle" fill="#d4a574" font-size="12">ΔP strip = P_wine − 0.3–0.5 bar</text>
+          <text x="590" y="300" text-anchor="middle" fill="#b9a59a" font-size="11">~1 atm absolute · counter-current</text>
+
+          <rect x="780" y="70" width="140" height="80" fill="#1a1014" stroke="#7cb89a" stroke-width="1.5"/>
+          <text x="850" y="105" text-anchor="middle" fill="#f6ece4" font-size="13">ABV sensor</text>
+          <text x="850" y="125" text-anchor="middle" fill="#b9a59a" font-size="11">density / NIR</text>
+
+          <rect x="780" y="280" width="140" height="80" fill="#1a1014" stroke="#e0b35a" stroke-width="1.5"/>
+          <text x="850" y="315" text-anchor="middle" fill="#f6ece4" font-size="13">Strip refresh</text>
+          <text x="850" y="335" text-anchor="middle" fill="#b9a59a" font-size="11">or EtOH recovery</text>
+
+          <path d="M170 105 H280" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <path d="M390 180 H480" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <path d="M590 120 V70 H780" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <path d="M170 315 H280" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <path d="M390 315 H480 315" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <path d="M700 320 H780" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <path d="M480 160 H430 160 V105 H170" stroke="#8b2e3b" stroke-width="1.2" stroke-dasharray="4 3" fill="none"/>
+          <text x="300" y="50" fill="#b9a59a" font-size="12">Return wine (dealcoholizing)</text>
+        </svg>
+        <figcaption>Figure A — Osmotic distillation (membrane contactor) P&amp;ID sketch. Ethanol vapor crosses gas-filled hydrophobic pores; liquids never mix if the membrane stays non-wetted. Manufacturer guidance: keep strip inlet pressure 0.3–0.5 bar below wine outlet pressure.</figcaption>
+      </figure>
+
+      <h3 style="font-family:var(--font-display);font-size:1.45rem;font-weight:500;margin:2rem 0 0.75rem;">Reference operating envelopes</h3>
+      <div style="overflow-x:auto;">
+        <table class="param-table">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Home OD (0.75–5 L)</th>
+              <th>Industrial OD (pilot → plant)</th>
+              <th>Pervaporation (PDMS)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Membrane</td>
+              <td>PP HF cartridge ~0.05–0.3 m²</td>
+              <td>Liqui-Cel 4×28 / 10×28 racks (m²-scale)</td>
+              <td>PERVAP™ 4060 PDMS flat / plate-frame</td>
+            </tr>
+            <tr>
+              <td>Temperature</td>
+              <td class="num">10–18 °C (chilled)</td>
+              <td class="num">10–21 °C (red to ~40 °C max guide)</td>
+              <td class="num">20–50 °C feed</td>
+            </tr>
+            <tr>
+              <td>System pressure</td>
+              <td class="num">~1 atm; ΔP 0.3–0.5 bar</td>
+              <td class="num">~1 atm; same ΔP rule</td>
+              <td class="num">Feed ~1 atm; permeate 1–10 mbar</td>
+            </tr>
+            <tr>
+              <td>Wine flow</td>
+              <td class="num">0.1–1.5 L·min⁻¹ recirculation</td>
+              <td class="num">Example trial: 64 L·min⁻¹ on dual 4×28</td>
+              <td class="num">Recirculation across cell / modules</td>
+            </tr>
+            <tr>
+              <td>Strip / permeate</td>
+              <td class="num">DI water; refresh each cycle</td>
+              <td class="num">Example: 8.6 L·min⁻¹ strip; regenerate</td>
+              <td class="num">Vacuum + cold trap / condenser</td>
+            </tr>
+            <tr>
+              <td>Ethanol rate</td>
+              <td class="num">0.11–0.17 L·m⁻²·h⁻¹</td>
+              <td class="num">Same order; area-scaled</td>
+              <td class="num">0.09–0.35 kg·m⁻²·h⁻¹ EtOH</td>
+            </tr>
+            <tr>
+              <td>Pre-filtration</td>
+              <td>≤5 µm absolute both loops</td>
+              <td>≤5 µm; optional strip deox contactor</td>
+              <td>Feed polish; avoid solids on dense layer</td>
+            </tr>
+            <tr>
+              <td>Control</td>
+              <td>User ABV setpoint 0.5–5%</td>
+              <td>Inline density/NIR + strip management</td>
+              <td>T, permeate P, feed ABV cascade</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="split split-2" style="margin-top:1.5rem;">
+        <div class="prose">
+          <p><strong>Home worked example.</strong> 0.75 L wine from 13% → 5% ABV removes 0.06 L ethanol. At effective OD flux 0.12 L·m⁻²·h⁻¹ and 0.15 m² module area, batch time ≈ 3.3 h—compatible with an evening cycle. For 13% → 0.5% (0.094 L ethanol) with depth derating ~0.55, expect ~9–12 h or a larger cartridge / overnight mode with 2–3 strip refreshes.</p>
+        </div>
+        <div class="prose">
+          <p><strong>Industrial worked example.</strong> Field-style Liqui-Cel guidance shows dual EXF-4×28 X50 contactors with wine ~64 L·min⁻¹ and strip ~8.6 L·min⁻¹ trimming several ABV points in hours depending on wine/strip volume ratio. Scaling to continuous duty is membrane-area and strip-regeneration limited—not a change in mechanism.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pervaporation">
+    <div class="wrap">
+      <p class="section-label">Pervaporation deep dive</p>
+      <h2>When vacuum earns its keep.</h2>
+      <p class="lede">Pervaporation (PV) uses a dense organophilic membrane. Ethanol dissolves into PDMS, diffuses, and evaporates into a vacuum permeate that is condensed as an ethanol-rich liquid (~36–46 wt% in wine trials)—no strip-water dilution of the wine matrix.</p>
+
+      <div class="pv-steps">
+        <article>
+          <h4>Sorption</h4>
+          <p>Ethanol preferentially partitions into the organophilic PDMS selective layer versus water (separation factor ~6–7.4 on PERVAP™ 4060 with red wine).</p>
+        </article>
+        <article>
+          <h4>Diffusion</h4>
+          <p>Solution–diffusion through the dense film. Raising feed temperature from 20→50°C lifts total flux from ~0.25→0.77 kg·m⁻²·h⁻¹ (Arrhenius; E_app ~29 kJ·mol⁻¹).</p>
+        </article>
+        <article>
+          <h4>Evaporation</h4>
+          <p>Permeate side held at ~1–10 mbar abs. so permeating species vaporize. Cold trap / condenser recovers liquid ethanol–water for disposal or rectification.</p>
+        </article>
+        <article>
+          <h4>Duty</h4>
+          <p>Best as (i) direct partial dealcoholization or (ii) regenerating OD strip water so industrial plants avoid massive aqueous effluent.</p>
+        </article>
+      </div>
+
+      <figure class="diagram" aria-label="Pervaporation process diagram">
+        <svg viewBox="0 0 960 360" xmlns="http://www.w3.org/2000/svg" role="img">
+          <defs>
+            <marker id="arrow2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#d4a574"/>
+            </marker>
+          </defs>
+          <rect x="50" y="120" width="140" height="100" fill="#1a1014" stroke="#c4454d" stroke-width="1.5"/>
+          <text x="120" y="160" text-anchor="middle" fill="#f6ece4" font-size="14">Wine feed</text>
+          <text x="120" y="180" text-anchor="middle" fill="#d4a574" font-size="12">20–50 °C</text>
+          <text x="120" y="200" text-anchor="middle" fill="#b9a59a" font-size="11">peristaltic loop</text>
+
+          <rect x="280" y="90" width="280" height="160" fill="#1a1014" stroke="#c4454d" stroke-width="2"/>
+          <text x="420" y="125" text-anchor="middle" fill="#f6ece4" font-size="15">PV membrane cell</text>
+          <text x="420" y="148" text-anchor="middle" fill="#d4a574" font-size="12">PERVAP™ 4060 · PDMS</text>
+          <rect x="310" y="165" width="220" height="28" fill="#8b2e3b" opacity="0.9"/>
+          <text x="420" y="184" text-anchor="middle" fill="#f6ece4" font-size="12">Dense selective layer</text>
+          <text x="420" y="230" text-anchor="middle" fill="#b9a59a" font-size="12">Feed side liquid · permeate vapor</text>
+
+          <rect x="640" y="40" width="150" height="70" fill="#1a1014" stroke="#d4a574" stroke-width="1.5"/>
+          <text x="715" y="70" text-anchor="middle" fill="#f6ece4" font-size="13">Vacuum pump</text>
+          <text x="715" y="90" text-anchor="middle" fill="#d4a574" font-size="11">1–10 mbar abs.</text>
+
+          <rect x="640" y="150" width="150" height="80" fill="#1a1014" stroke="#7cb89a" stroke-width="1.5"/>
+          <text x="715" y="185" text-anchor="middle" fill="#f6ece4" font-size="13">Cold trap</text>
+          <text x="715" y="205" text-anchor="middle" fill="#b9a59a" font-size="11">36–46 wt% EtOH</text>
+
+          <rect x="640" y="270" width="150" height="60" fill="#1a1014" stroke="#b9a59a" stroke-width="1.5"/>
+          <text x="715" y="305" text-anchor="middle" fill="#f6ece4" font-size="13">Retentate wine</text>
+
+          <path d="M190 170 H280" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrow2)"/>
+          <path d="M560 120 H640" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrow2)"/>
+          <path d="M560 200 H640" stroke="#d4a574" stroke-width="1.5" marker-end="url(#arrow2)"/>
+          <path d="M420 250 V300 H640" stroke="#8b2e3b" stroke-width="1.5" marker-end="url(#arrow2)"/>
+          <path d="M715 110 V150" stroke="#d4a574" stroke-width="1.2" stroke-dasharray="3 3"/>
+        </svg>
+        <figcaption>Figure B — Organophilic pervaporation. Unlike OD, there is no aqueous strip loop on the permeate side; vacuum provides the driving force. Published wine flux at 50°C ≈ 0.77 kg·m⁻²·h⁻¹ total with α ≈ 7.4.</figcaption>
+      </figure>
+
+      <div class="split split-2">
+        <div class="prose">
+          <p><strong>Design implications for Vinora.</strong> A home PV appliance needs a quiet vacuum pump, cold trap, and denser safety/controls story—higher BOM than OD. Industrial PV shines for concentrating ethanol out of OD strip water (hybrid OD→PV), cutting wastewater COD and creating a sellable spirit co-product.</p>
+          <p><strong>Limits.</strong> Some aroma esters co-permeate; metals can appear at trace levels in permeate; fouling and support compaction matter at long duty. Pilot on each varietal before locking SKUs.</p>
+        </div>
+        <div class="prose">
+          <p><strong>Hybrid flowsheet (recommended industrial).</strong> Stage 1: OD contactor trims wine ABV at 10–21°C with aroma-friendly kinetics. Stage 2: PV or vacuum distillation regenerates strip water and recovers ethanol. Stage 3: optional blend-back of untreated wine to hit the exact commercial setpoint (0.5 / 2 / 5%).</p>
+        </div>
       </div>
     </div>
   </section>
@@ -885,6 +1404,130 @@
     </div>
   </section>
 
+
+  <section id="investors">
+    <div class="wrap">
+      <p class="section-label">Investor presentation</p>
+      <h2>Capital, returns, and why membranes win.</h2>
+      <p class="lede">A concise deck for diligence meetings. Figures are planning estimates anchored to published market sizes and the process calculator—not audited financials.</p>
+
+      <div class="deck-shell">
+        <div class="deck-toolbar">
+          <div class="title">Vinora · Seed / Series A narrative</div>
+          <div class="deck-controls">
+            <button type="button" id="deckPrev" aria-label="Previous slide">← Prev</button>
+            <span class="pos" id="deckPos">1 / 8</span>
+            <button type="button" id="deckNext" aria-label="Next slide">Next →</button>
+          </div>
+        </div>
+        <div class="slides" id="deckSlides">
+          <article class="slide active" data-i="0">
+            <p class="eyebrow">01 · The ask</p>
+            <h3>Build the membrane standard for low-alcohol wine.</h3>
+            <p class="sub">Dual-product company: a home dealcoholizer people love, and industrial OD/PV skids producers trust—same physics, shared IP.</p>
+            <div class="slide-metrics">
+              <div class="m"><div class="big">$4.5M</div><div class="lbl">Seed raise (18–24 mo runway)</div></div>
+              <div class="m"><div class="big">$1.8B+</div><div class="lbl">Dealcoholized wine market (2024)</div></div>
+              <div class="m"><div class="big">~$525M</div><div class="lbl">Membrane dealcoholization equipment</div></div>
+              <div class="m"><div class="big">0.5–5%</div><div class="lbl">User-selectable ABV wedge</div></div>
+            </div>
+          </article>
+
+          <article class="slide" data-i="1">
+            <p class="eyebrow">02 · Why now</p>
+            <h3>Health, regulation, and climate-ripened grapes.</h3>
+            <ul class="bullets">
+              <li>Higher Brix fruit is pushing finished ABV up—producers need gentle alcohol adjustment without cooking the wine.</li>
+              <li>EU and major markets now explicitly categorize dealcoholized / partially dealcoholized wines—labels need precise setpoints.</li>
+              <li>No credible premium home device owns “choose your ABV” with membrane science consumers can taste.</li>
+              <li>Industrial buyers want aroma retention at cellar temperature; OD delivers what spinning cones trade for speed.</li>
+            </ul>
+          </article>
+
+          <article class="slide" data-i="2">
+            <p class="eyebrow">03 · Product dual-track</p>
+            <h3>One science platform. Two revenue engines.</h3>
+            <div class="compare">
+              <div class="col">
+                <h4>Home · Vinora Cellar</h4>
+                <p>Countertop OD, 0.75–5 L batches, chilled strip packs, target retail <strong style="color:var(--ink)">$699–$1,199</strong>. Consumables: membranes + strip cartridges (razor/blade).</p>
+              </div>
+              <div class="col">
+                <h4>Industrial · Vinora Line</h4>
+                <p>Modular Liqui-Cel–class racks + optional PV strip recovery. ASP planning range <strong style="color:var(--ink)">$180k–$450k+</strong> by capacity, with service contracts.</p>
+              </div>
+            </div>
+            <p class="slide-note">Shared: hydrophobic contactor know-how, ABV control firmware, aroma-loss models, food-contact qualifications.</p>
+          </article>
+
+          <article class="slide" data-i="3">
+            <p class="eyebrow">04 · Unit economics · home</p>
+            <h3>Hardware margin plus attach.</h3>
+            <div class="slide-metrics">
+              <div class="m"><div class="big">$899</div><div class="lbl">Illustrative ASP</div></div>
+              <div class="m"><div class="big">~45%</div><div class="lbl">Target hardware gross margin</div></div>
+              <div class="m"><div class="big">15–25%</div><div class="lbl">Consumables attach (yr)</div></div>
+              <div class="m"><div class="big">$2.2M</div><div class="lbl">Rev @ 2,500 units Y1</div></div>
+            </div>
+            <ul class="bullets">
+              <li>Membrane module is the largest COGS line—design for field-replaceable cartridges.</li>
+              <li>DTC + specialty kitchen/wine retail; B2B tasting-room placements as beachhead.</li>
+            </ul>
+          </article>
+
+          <article class="slide" data-i="4">
+            <p class="eyebrow">05 · Unit economics · industrial</p>
+            <h3>Project revenue with sticky service.</h3>
+            <div class="slide-metrics">
+              <div class="m"><div class="big">~$290k</div><div class="lbl">Mid-size skid ASP (model)</div></div>
+              <div class="m"><div class="big">40–50%</div><div class="lbl">Project gross margin target</div></div>
+              <div class="m"><div class="big">$3.5M</div><div class="lbl">Rev @ 12 projects Y1</div></div>
+              <div class="m"><div class="big">10–15%</div><div class="lbl">ARR service / membranes</div></div>
+            </div>
+            <p class="slide-note">Compete on ambient-temperature aroma retention and lower thermal OPEX vs spinning-cone / vacuum distillation—partner where OEMs already own thermal.</p>
+          </article>
+
+          <article class="slide" data-i="5">
+            <p class="eyebrow">06 · Use of funds · $4.5M seed</p>
+            <h3>Pilot, certify, then scale the home SKU.</h3>
+            <div class="funds">
+              <div class="row"><span>R&amp;D / pilots</span><div class="track"><div class="fill" style="width:32%"></div></div><span class="pct">32%</span></div>
+              <div class="row"><span>Home tooling</span><div class="track"><div class="fill" style="width:22%"></div></div><span class="pct">22%</span></div>
+              <div class="row"><span>Food-contact / QA</span><div class="track"><div class="fill" style="width:12%"></div></div><span class="pct">12%</span></div>
+              <div class="row"><span>Go-to-market</span><div class="track"><div class="fill" style="width:18%"></div></div><span class="pct">18%</span></div>
+              <div class="row"><span>Team</span><div class="track"><div class="fill" style="width:12%"></div></div><span class="pct">12%</span></div>
+              <div class="row"><span>Runway reserve</span><div class="track"><div class="fill" style="width:4%"></div></div><span class="pct">4%</span></div>
+            </div>
+            <p class="slide-note">~$1.4M R&amp;D covers membrane qualification (Solventum / DeltaMem), home alpha→beta, and one industrial pilot skid with a partner winery.</p>
+          </article>
+
+          <article class="slide" data-i="6">
+            <p class="eyebrow">07 · Returns path</p>
+            <h3>From seed to a category-defining platform.</h3>
+            <ul class="bullets">
+              <li><strong style="color:var(--ink)">18 months:</strong> certified home beta, 1 industrial reference plant, LOIs from 3 regional producers.</li>
+              <li><strong style="color:var(--ink)">Year 3:</strong> combined ~$18–25M revenue case if home scales to mid-five-digit units and industrial hits ~40 skids/upgrades (illustrative).</li>
+              <li><strong style="color:var(--ink)">Exit analogies:</strong> beverage-tech specialists and filtration platform tuck-ins; strategic interest from wine groups and membrane majors.</li>
+              <li>Upside: licensing control firmware + cartridge supply into OEM thermal players as the “gentle trim” module.</li>
+            </ul>
+          </article>
+
+          <article class="slide" data-i="7">
+            <p class="eyebrow">08 · Risks &amp; mitigation</p>
+            <h3>Science is ready. Execution is the bet.</h3>
+            <ul class="bullets">
+              <li><strong style="color:var(--ink)">Aroma loss:</strong> cold OD, short residence, blend-back; PVDF upgrade path.</li>
+              <li><strong style="color:var(--ink)">Membrane supply:</strong> dual-qualify Solventum + alternate HF; keep PV as strip regenerator option.</li>
+              <li><strong style="color:var(--ink)">Home adoption:</strong> start with tasting rooms &amp; wine clubs before broad DTC.</li>
+              <li><strong style="color:var(--ink)">Regulation:</strong> label claims track measured ABV; regional alcohol-handling permits for recovered ethanol.</li>
+            </ul>
+            <p class="slide-note">Next diligence step: funded 50–200 L pilot on three varietals with third-party sensory panels.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="sources">
     <div class="wrap">
       <p class="section-label">References</p>
@@ -896,6 +1539,9 @@
         <li><cite>Coronel et al.</cite> — Malbec PDMS pervaporation; total fluxes 1.02 / 1.38 / 1.82 kg·m⁻²·h⁻¹ at 35 / 40 / 45 °C.</li>
         <li><cite>Comparative RO vs NF wine dealcoholization</cite> — <em>Membranes</em> (2026). RO ~1.1–1.9 L·m⁻²·h⁻¹; NF ~4–9 L·m⁻²·h⁻¹ at 25–35 bar.</li>
         <li><cite>QY Research / Fact.MR / Growth Market Reports</cite> — Dealcoholized wine ~US$1.8–2.6B (2024); membrane dealcoholization equipment ~US$525M (2024).</li>
+
+        <li><cite>Solventum / 3M Liqui-Cel™</cite> — Alcohol reduction from wines using membrane contactors (application brief). X50 fiber; shell wine / lumen strip; ΔP 0.3–0.5 bar; example flows 64 / 8.6 L·min⁻¹ on dual 4×28; T guides 10–40°C red / 10–30°C white.</li>
+        <li><cite>DeltaMem AG (Pervap / PERVAP™)</cite> — Commercial organophilic PV membranes (4060 lineage, formerly Sulzer Chemtech) for ethanol removal from aqueous feeds.</li>
       </ol>
     </div>
   </section>
@@ -1209,5 +1855,29 @@
       compute();
     })();
   </script>
+
+  <script>
+    (function () {
+      const slides = Array.from(document.querySelectorAll('#deckSlides .slide'));
+      if (!slides.length) return;
+      let i = 0;
+      const pos = document.getElementById('deckPos');
+      const show = (n) => {
+        i = (n + slides.length) % slides.length;
+        slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+        pos.textContent = (i + 1) + ' / ' + slides.length;
+      };
+      document.getElementById('deckPrev').addEventListener('click', () => show(i - 1));
+      document.getElementById('deckNext').addEventListener('click', () => show(i + 1));
+      document.addEventListener('keydown', (e) => {
+        if (!document.getElementById('investors')) return;
+        const rect = document.getElementById('investors').getBoundingClientRect();
+        if (rect.top > window.innerHeight || rect.bottom < 0) return;
+        if (e.key === 'ArrowRight') show(i + 1);
+        if (e.key === 'ArrowLeft') show(i - 1);
+      });
+    })();
+  </script>
+
 </body>
 </html>
