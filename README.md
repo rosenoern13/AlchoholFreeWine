@@ -4,7 +4,7 @@ Scientific feasibility report, process engineering detail, and interactive busin
 
 ## Live page
 
-**https://cdn.jsdelivr.net/gh/rosenoern13/AlchoholFreeWine@cursor/vinora-science-investor-deck-0749/index.html**
+**https://cdn.jsdelivr.net/gh/rosenoern13/AlchoholFreeWine@a712aa5/index.html**
 
 Mirror: [raw.githack](https://raw.githack.com/rosenoern13/AlchoholFreeWine/cursor/vinora-science-investor-deck-0749/index.html)
 
