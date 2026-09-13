@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vinora — Membrane Wine Dealcoholization</title>
+  <meta name="description" content="Scientific feasibility report and business-plan calculator for pressure-driven membrane dealcoholization of wine to 0.5–5% ABV." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #140c0e;
+      --bg-2: #1e1216;
+      --surface: rgba(255, 246, 239, 0.04);
+      --ink: #f6ece4;
+      --muted: #b9a59a;
+      --wine: #8b2e3b;
+      --wine-bright: #c4454d;
+      --gold: #d4a574;
+      --gold-dim: #a67c52;
+      --line: rgba(246, 236, 228, 0.12);
+      --ok: #7cb89a;
+      --warn: #e0b35a;
+      --bad: #d4726a;
+      --radius: 2px;
+      --max: 1120px;
+      --font-display: "Fraunces", Georgia, serif;
+      --font-body: "Outfit", sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.55;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* Atmospheric background */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(139, 46, 59, 0.45), transparent 55%),
+        radial-gradient(ellipse 60% 40% at 90% 20%, rgba(212, 165, 116, 0.12), transparent 50%),
+        radial-gradient(ellipse 70% 50% at 50% 100%, rgba(30, 18, 22, 0.9), transparent),
+        linear-gradient(165deg, #1a0e12 0%, #0f090b 45%, #161014 100%);
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.35;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode: soft-light;
+    }
+
+    a { color: var(--gold); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    a:hover { color: var(--ink); }
+
+    .wrap { width: min(100% - 2.5rem, var(--max)); margin-inline: auto; }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(20, 12, 14, 0.72);
+      border-bottom: 1px solid var(--line);
+      transform: translateY(0);
+      transition: transform 0.35s ease;
+    }
+    nav .inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 0;
+      width: min(100% - 2.5rem, var(--max));
+      margin-inline: auto;
+    }
+    .logo {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 400;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    @media (max-width: 720px) {
+      .nav-links { display: none; }
+    }
+
+    /* Hero — one composition */
+    .hero {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      align-items: end;
+      padding: 7rem 0 4rem;
+      position: relative;
+      isolation: isolate;
+    }
+    .hero-visual {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .hero-visual .glass {
+      position: absolute;
+      right: -5%;
+      top: 8%;
+      width: min(58vw, 640px);
+      height: min(78vh, 720px);
+      border-radius: 45% 45% 42% 42% / 28% 28% 55% 55%;
+      background:
+        linear-gradient(160deg, rgba(196, 69, 77, 0.55) 0%, rgba(139, 46, 59, 0.35) 40%, rgba(40, 18, 24, 0.2) 100%),
+        radial-gradient(circle at 40% 30%, rgba(212, 165, 116, 0.25), transparent 45%);
+      box-shadow:
+        inset 0 0 80px rgba(255, 220, 200, 0.08),
+        0 40px 100px rgba(0, 0, 0, 0.45);
+      animation: pour 9s ease-in-out infinite alternate;
+      filter: saturate(1.05);
+    }
+    .hero-visual .glass::before {
+      content: "";
+      position: absolute;
+      inset: 12% 18% 18%;
+      border-radius: inherit;
+      background: linear-gradient(180deg, transparent 0%, rgba(90, 20, 30, 0.5) 35%, rgba(139, 46, 59, 0.85) 100%);
+      animation: level 11s ease-in-out infinite alternate;
+    }
+    .hero-visual .sheen {
+      position: absolute;
+      right: 8%;
+      top: 12%;
+      width: min(35vw, 280px);
+      height: 70%;
+      background: linear-gradient(105deg, transparent 40%, rgba(255, 246, 239, 0.08) 48%, transparent 56%);
+      animation: sheen 7s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes pour {
+      from { transform: translateY(0) rotate(-2deg); }
+      to { transform: translateY(18px) rotate(1deg); }
+    }
+    @keyframes level {
+      from { transform: translateY(4%); }
+      to { transform: translateY(-2%); }
+    }
+    @keyframes sheen {
+      0%, 100% { opacity: 0.4; transform: translateX(0); }
+      50% { opacity: 0.85; transform: translateX(-12px); }
+    }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-copy {
+      max-width: 34rem;
+      animation: rise 0.9s ease both;
+    }
+    .hero-copy .brand {
+      font-family: var(--font-display);
+      font-size: clamp(3.4rem, 9vw, 5.6rem);
+      font-weight: 700;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+    .hero-copy .brand em {
+      font-style: normal;
+      color: var(--gold);
+    }
+    .hero-copy h1 {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+      max-width: 28rem;
+    }
+    .hero-copy p {
+      color: var(--muted);
+      font-size: 1.02rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.4rem;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--wine-bright);
+      color: #fff8f4;
+    }
+    .btn-primary:hover { background: #d4535a; color: #fff; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* Sections */
+    section { padding: 5.5rem 0; }
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+    }
+    h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 0.85rem;
+      max-width: 20ch;
+    }
+    .lede {
+      color: var(--muted);
+      max-width: 40rem;
+      margin-bottom: 2.5rem;
+      font-size: 1.05rem;
+    }
+
+    .split {
+      display: grid;
+      gap: 2.5rem;
+    }
+    @media (min-width: 860px) {
+      .split-2 { grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+      .split-aside { grid-template-columns: 1.1fr 0.9fr; }
+    }
+
+    .prose p { color: var(--muted); margin-bottom: 1rem; }
+    .prose strong { color: var(--ink); font-weight: 500; }
+
+    .callout {
+      border-left: 2px solid var(--gold);
+      padding: 0.25rem 0 0.25rem 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .callout p { color: var(--ink); font-size: 1.05rem; }
+
+    /* Rate table */
+    .rate-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin: 1.5rem 0;
+    }
+    .rate-table th,
+    .rate-table td {
+      text-align: left;
+      padding: 0.85rem 0.75rem;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .rate-table th {
+      color: var(--gold);
+      font-weight: 500;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .rate-table td { color: var(--muted); }
+    .rate-table td:first-child { color: var(--ink); font-weight: 500; }
+    .rate-num { color: var(--gold) !important; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+    .pill-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.25rem 0 0; }
+    .tag {
+      font-size: 0.78rem;
+      padding: 0.35rem 0.7rem;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: var(--surface);
+    }
+
+    /* Verdict strip */
+    .verdict {
+      display: grid;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    @media (min-width: 700px) {
+      .verdict { grid-template-columns: repeat(3, 1fr); }
+    }
+    .verdict article {
+      padding: 1.35rem 1.25rem;
+      background: var(--surface);
+      border-top: 2px solid var(--wine);
+    }
+    .verdict h3 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    .verdict p { color: var(--muted); font-size: 0.92rem; }
+    .status {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.55rem;
+      color: var(--ok);
+      font-weight: 500;
+    }
+    .status.warn { color: var(--warn); }
+
+    /* Calculator */
+    #calculator {
+      background: linear-gradient(180deg, rgba(139, 46, 59, 0.08), transparent 40%);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .calc-shell {
+      display: grid;
+      gap: 1.75rem;
+    }
+    @media (min-width: 960px) {
+      .calc-shell { grid-template-columns: 1fr 1.05fr; gap: 2rem; align-items: start; }
+    }
+    .panel {
+      background: rgba(255, 246, 239, 0.03);
+      border: 1px solid var(--line);
+      padding: 1.5rem;
+    }
+    .panel h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+    }
+    .field { margin-bottom: 1.15rem; }
+    .field label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    .field label .val {
+      color: var(--gold);
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+    }
+    .field input[type="range"] {
+      width: 100%;
+      accent-color: var(--wine-bright);
+      height: 0.35rem;
+    }
+    .field select,
+    .field input[type="number"] {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      padding: 0.65rem 0.75rem;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      border-radius: var(--radius);
+    }
+    .field select:focus,
+    .field input:focus {
+      outline: 1px solid var(--gold-dim);
+      border-color: var(--gold-dim);
+    }
+    .seg {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.4rem;
+    }
+    .seg button {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      padding: 0.7rem;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .seg button.active {
+      background: rgba(196, 69, 77, 0.25);
+      border-color: var(--wine-bright);
+      color: var(--ink);
+    }
+    .tech-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+      padding: 0.85rem;
+      background: rgba(0, 0, 0, 0.25);
+      border-left: 2px solid var(--gold-dim);
+      margin-top: 0.5rem;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .metric {
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.28);
+      border-top: 1px solid var(--line);
+    }
+    .metric.wide { grid-column: 1 / -1; }
+    .metric .k {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+    .metric .v {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 500;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+      line-height: 1.2;
+    }
+    .metric .v small {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 400;
+      margin-left: 0.25rem;
+    }
+    .metric .hint { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
+
+    .bar-chart {
+      margin: 1rem 0 1.5rem;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 7.5rem 1fr 4.5rem;
+      gap: 0.6rem;
+      align-items: center;
+      margin-bottom: 0.55rem;
+      font-size: 0.82rem;
+    }
+    .bar-row span:first-child { color: var(--muted); }
+    .bar-track {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--wine), var(--gold));
+      width: 0;
+      transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .bar-row .amt {
+      text-align: right;
+      color: var(--gold);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 1.25rem;
+    }
+    .tabs button {
+      background: none;
+      border: none;
+      color: var(--muted);
+      padding: 0.7rem 1rem;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+    }
+    .tabs button.active {
+      color: var(--ink);
+      border-bottom-color: var(--gold);
+    }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; animation: rise 0.4s ease both; }
+
+    /* Sources */
+    .sources {
+      list-style: none;
+      counter-reset: src;
+    }
+    .sources li {
+      counter-increment: src;
+      padding: 1rem 0 1rem 2.5rem;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.9rem;
+      position: relative;
+    }
+    .sources li::before {
+      content: "[" counter(src) "]";
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    .sources cite { color: var(--ink); font-style: normal; font-weight: 500; }
+
+    footer {
+      padding: 3rem 0 4rem;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    footer .brand-f {
+      font-family: var(--font-display);
+      color: var(--ink);
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .assump {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.45;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--line);
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="inner">
+      <a class="logo" href="#">Vinora<span>.</span></a>
+      <ul class="nav-links">
+        <li><a href="#science">Science</a></li>
+        <li><a href="#rates">Rates</a></li>
+        <li><a href="#calculator">Calculator</a></li>
+        <li><a href="#sources">Sources</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-visual" aria-hidden="true">
+      <div class="glass"></div>
+      <div class="sheen"></div>
+    </div>
+    <div class="wrap hero-copy">
+      <p class="brand">Vinora<em>.</em></p>
+      <h1>Membrane dealcoholization for home cellars and industrial lines.</h1>
+      <p>Pressure-circulated membrane contactors that bring finished wine to a user-selected 0.5–5% ABV—grounded in published flux data.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#calculator">Open the calculator</a>
+        <a class="btn btn-ghost" href="#science">Read the feasibility</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="science">
+    <div class="wrap">
+      <p class="section-label">Scientific feasibility</p>
+      <h2>Ethanol can leave the wine. Flavor does not have to follow.</h2>
+      <p class="lede">Removing alcohol from finished wine is already practiced industrially. The open question for Vinora is whether a peristaltic, dialysis-style membrane loop—gentle pressure, ambient temperature, selectable final ABV—is scientifically sound for both a countertop unit and a winery skid.</p>
+
+      <div class="split split-2">
+        <div class="prose">
+          <p><strong>Verdict: feasible.</strong> Membrane dealcoholization of wine is commercially and academically established. Osmotic distillation (also called evaporative pertraction)—wine on one side of a hydrophobic hollow-fiber membrane, water stripper on the other—matches the dialysis-like architecture you described, and is routinely driven by peristaltic or centrifugal recirculation at near-atmospheric differential pressure.</p>
+          <p>True <strong>dialysis</strong> (hydrophilic membranes, liquid–liquid diffusion) also works but tends to strip minerals and phenolics more aggressively than hydrophobic contactors. <strong>Reverse osmosis / nanofiltration</strong> are pressure-driven (typically 20–35 bar) and scale well industrially, but are a poorer fit for a home device. <strong>Pervaporation</strong> (organophilic PDMS) is selective for ethanol but needs vacuum on the permeate side.</p>
+          <div class="callout">
+            <p>For dual home + industrial products, osmotic distillation (membrane contactor) is the strongest shared platform: low pressure, ambient temperature, peristaltic loops, and published ethanol fluxes on real wine.</p>
+          </div>
+          <p>Targets of <strong>0.5–5% ABV</strong> are within demonstrated process envelopes. Literature already shows reduction from ~10.5–14.8% ABV down to ~0.5% with multi-cycle strip-water exchange, and partial cuts of 2–4% ABV in a single pass for “lighter” wines. Selectable setpoints are an instrumentation and control problem (inline densitometry / refractive index / NIR), not a membrane physics barrier.</p>
+        </div>
+        <div class="prose">
+          <p><strong>What limits the process</strong> is not whether ethanol crosses the membrane—it does—but how much aroma travels with it, how strip water is managed, and how flux falls as the concentration driving force shrinks toward 0.5% ABV.</p>
+          <p>At ~11–15 °C, hydrophobic PP and PVDF hollow fibers transfer ethanol at roughly <strong>0.11–0.17 L·m⁻²·h⁻¹</strong> during a −3% ABV cut. Organophilic pervaporation at 20–50 °C yields total permeate fluxes of <strong>0.25–1.8 kg·m⁻²·h⁻¹</strong> with separation factors ~6–7. Wine RO permeate fluxes sit near <strong>1.1–1.9 L·m⁻²·h⁻¹</strong>; NF is faster at <strong>~4–9 L·m⁻²·h⁻¹</strong> but less selective.</p>
+          <p>Deep dealcoholization to 0.5% requires refreshing the strip solution (or evaporating/recovering ethanol from it). Expect longer residence times and higher aroma loss than a mild trim to 5%. EU / labeling rules also distinguish “dealcoholized” (&lt;0.5%), “partially dealcoholized,” and low-alcohol categories—product claims must track the selected setpoint.</p>
+          <div class="pill-row">
+            <span class="tag">Osmotic distillation · preferred</span>
+            <span class="tag">Peristaltic recirculation</span>
+            <span class="tag">0.5–5% ABV selectable</span>
+            <span class="tag">Home + industrial</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="verdict">
+        <article>
+          <p class="status">Feasible</p>
+          <h3>Home device</h3>
+          <p>0.05–0.3 m² hollow-fiber module, dual peristaltic loops, chilled strip water, batch 0.75–5 L. Cycle times of a few hours for a mild cut; overnight for deep 0.5% on a bottle. Consumable: strip water + periodic membrane replacement.</p>
+        </article>
+        <article>
+          <p class="status">Feasible</p>
+          <h3>Industrial skid</h3>
+          <p>Modular Liqui-Cel–class contactors or custom PVDF bundles, continuous or multi-pass batch, strip-water recovery (distillation / RO) to cut waste and reclaim ethanol co-product. Scales by area, not new physics.</p>
+        </article>
+        <article>
+          <p class="status warn">Watch-outs</p>
+          <h3>Quality &amp; ops</h3>
+          <p>Ester losses rise with deeper cuts; cold OD helps. Fouling, wetting of hydrophobic pores, and strip disposal dominate OPEX. Sensory validation per varietal is mandatory before SKU launch.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="rates">
+    <div class="wrap">
+      <p class="section-label">Published membrane rates</p>
+      <h2>Numbers the calculator actually uses.</h2>
+      <p class="lede">Every default flux below is anchored to peer-reviewed wine (or wine-relevant ethanol–water) experiments—not generic water-treatment catalogs.</p>
+
+      <div style="overflow-x: auto;">
+        <table class="rate-table">
+          <thead>
+            <tr>
+              <th>Process</th>
+              <th>Membrane</th>
+              <th>Measured rate</th>
+              <th>Conditions</th>
+              <th>Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Osmotic distillation</td>
+              <td>PP hollow fiber (Liqui-Cel class)</td>
+              <td class="rate-num">0.11–0.13 L·m⁻²·h⁻¹ ethanol</td>
+              <td>Red wine, −3% ABV, 11–15 °C</td>
+              <td>[2]</td>
+            </tr>
+            <tr>
+              <td>Osmotic distillation</td>
+              <td>Superhydrophobic PVDF HF</td>
+              <td class="rate-num">0.17 L·m⁻²·h⁻¹ ethanol</td>
+              <td>Tempranillo, −3% ABV, ~11 °C</td>
+              <td>[2]</td>
+            </tr>
+            <tr>
+              <td>Osmotic distillation</td>
+              <td>PP membrane contactor</td>
+              <td class="rate-num">K ≈ 0.02–0.53 kg·m⁻²·h⁻¹·bar⁻¹</td>
+              <td>Wine 10.5% → ~0.5%, multi-cycle strip refresh</td>
+              <td>[3]</td>
+            </tr>
+            <tr>
+              <td>Pervaporation</td>
+              <td>PERVAP™ 4060 (PDMS)</td>
+              <td class="rate-num">0.254–0.765 kg·m⁻²·h⁻¹ total<br/>EtOH 0.093–0.349 kg·m⁻²·h⁻¹</td>
+              <td>Red wine 12.5% vol, 20–50 °C, ~1 mbar permeate</td>
+              <td>[1]</td>
+            </tr>
+            <tr>
+              <td>Pervaporation</td>
+              <td>PDMS</td>
+              <td class="rate-num">1.02–1.82 kg·m⁻²·h⁻¹ total</td>
+              <td>Malbec 14.8% → 10.5%, 35–45 °C</td>
+              <td>[4]</td>
+            </tr>
+            <tr>
+              <td>Reverse osmosis</td>
+              <td>ACM3 RO</td>
+              <td class="rate-num">1.13–1.87 L·m⁻²·h⁻¹ permeate</td>
+              <td>Wine, 25–35 bar; 2–4% ABV reduction runs</td>
+              <td>[5]</td>
+            </tr>
+            <tr>
+              <td>Nanofiltration</td>
+              <td>TS80 NF</td>
+              <td class="rate-num">6.3–9.0 L·m⁻²·h⁻¹ permeate</td>
+              <td>Same wine matrix, 25–35 bar</td>
+              <td>[5]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="prose" style="margin-top: 1.5rem;">
+        <p><strong>Modeling note.</strong> Osmotic-distillation ethanol flux declines as wine ABV falls and as strip water approaches equilibrium. The calculator applies a depth derating (mild → deep) so batch times to 0.5% are not naïvely extrapolated from −3% literature points. RO/NF paths size area from diafiltration volume <em>V·ln(C₀/C<sub>f</sub>)</em> with ethanol treated as highly permeable—consistent with low measured ethanol rejection in wine NF/RO dealcoholization literature.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="calculator">
+    <div class="wrap">
+      <p class="section-label">Business &amp; process calculator</p>
+      <h2>Size the membrane. Price the plan.</h2>
+      <p class="lede">Choose home or industrial scale, membrane technology, and a target ABV between 0.5% and 5%. Outputs use the published flux bands above.</p>
+
+      <div class="calc-shell">
+        <div class="panel">
+          <h3>Inputs</h3>
+
+          <div class="field">
+            <label>Product line</label>
+            <div class="seg" id="scaleSeg">
+              <button type="button" class="active" data-scale="home">Home device</button>
+              <button type="button" data-scale="industrial">Industrial</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Membrane process</label>
+            <select id="tech">
+              <option value="od_pp">Osmotic distillation — PP HF (dialysis-style)</option>
+              <option value="od_pvdf">Osmotic distillation — PVDF HF</option>
+              <option value="pv">Pervaporation — PDMS</option>
+              <option value="ro">Reverse osmosis</option>
+              <option value="nf">Nanofiltration</option>
+            </select>
+            <p class="tech-note" id="techNote"></p>
+          </div>
+
+          <div class="field">
+            <label>Batch / design volume <span class="val" id="volLabel">0.75 L</span></label>
+            <input type="range" id="volume" min="0.75" max="5" step="0.25" value="0.75" />
+          </div>
+
+          <div class="field">
+            <label>Starting ABV <span class="val" id="abvInLabel">13.0%</span></label>
+            <input type="range" id="abvIn" min="8" max="16" step="0.1" value="13" />
+          </div>
+
+          <div class="field">
+            <label>Target ABV (user selectable) <span class="val" id="abvOutLabel">5.0%</span></label>
+            <input type="range" id="abvOut" min="0.5" max="5" step="0.1" value="5" />
+          </div>
+
+          <div class="field">
+            <label>Desired cycle time <span class="val" id="timeLabel">4.0 h</span></label>
+            <input type="range" id="cycleTime" min="0.5" max="24" step="0.5" value="4" />
+          </div>
+
+          <div class="field" id="homePriceField">
+            <label>Device retail price (USD) <span class="val" id="priceLabel">$899</span></label>
+            <input type="range" id="retailPrice" min="399" max="2499" step="50" value="899" />
+          </div>
+
+          <div class="field" id="indCapField" style="display:none">
+            <label>Annual wine capacity (hL) <span class="val" id="capLabel">5,000 hL</span></label>
+            <input type="range" id="annualCap" min="500" max="100000" step="500" value="5000" />
+          </div>
+
+          <div class="field">
+            <label>Gross margin on hardware / project <span class="val" id="marginLabel">45%</span></label>
+            <input type="range" id="margin" min="20" max="65" step="1" value="45" />
+          </div>
+
+          <div class="field" id="unitsField">
+            <label>Year-1 unit sales <span class="val" id="unitsLabel">2,500</span></label>
+            <input type="range" id="units" min="100" max="25000" step="100" value="2500" />
+          </div>
+
+          <div class="field" id="projectsField" style="display:none">
+            <label>Year-1 skid projects <span class="val" id="projectsLabel">12</span></label>
+            <input type="range" id="projects" min="1" max="80" step="1" value="12" />
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="tabs" role="tablist">
+            <button type="button" class="active" data-tab="process">Process sizing</button>
+            <button type="button" data-tab="business">Business plan</button>
+          </div>
+
+          <div class="tab-pane active" id="tab-process">
+            <h3 style="margin-bottom:1rem">Membrane &amp; batch results</h3>
+            <div class="metrics">
+              <div class="metric">
+                <div class="k">Ethanol to remove</div>
+                <div class="v" id="mEthanol">—</div>
+              </div>
+              <div class="metric">
+                <div class="k">Effective flux used</div>
+                <div class="v" id="mFlux">—</div>
+              </div>
+              <div class="metric">
+                <div class="k">Required membrane area</div>
+                <div class="v" id="mArea">—</div>
+              </div>
+              <div class="metric">
+                <div class="k">Depth derating</div>
+                <div class="v" id="mDerate">—</div>
+              </div>
+              <div class="metric wide">
+                <div class="k">Design interpretation</div>
+                <div class="v" id="mInterp" style="font-size:1.05rem;font-family:var(--font-body);font-weight:400;line-height:1.4"></div>
+              </div>
+            </div>
+            <p class="assump" id="processAssump"></p>
+          </div>
+
+          <div class="tab-pane" id="tab-business">
+            <h3 style="margin-bottom:1rem">Year-1 economics</h3>
+            <div class="metrics">
+              <div class="metric">
+                <div class="k">Hardware revenue</div>
+                <div class="v" id="bRev">—</div>
+              </div>
+              <div class="metric">
+                <div class="k">Gross profit</div>
+                <div class="v" id="bGross">—</div>
+              </div>
+              <div class="metric">
+                <div class="k">Est. COGS / unit</div>
+                <div class="v" id="bCogs">—</div>
+              </div>
+              <div class="metric">
+                <div class="k">Membrane cost share</div>
+                <div class="v" id="bMem">—</div>
+              </div>
+              <div class="metric wide">
+                <div class="k">Addressable context</div>
+                <div class="v" id="bMarket" style="font-size:1.05rem;font-family:var(--font-body);font-weight:400;line-height:1.4"></div>
+              </div>
+            </div>
+            <div class="bar-chart" id="costStack" aria-label="Cost stack"></div>
+            <p class="assump">Market anchors: dealcoholized wine ~US$1.8B (2024); membrane dealcoholization equipment for beer &amp; wine ~US$525M (2024). Home device TAM is nascent—model treats early sales as specialty appliance + DTC. Industrial ASP scales with capacity (~US$180–450k for mid-size OD skids in this model). Figures are planning estimates, not audited forecasts.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="architecture">
+    <div class="wrap split split-aside">
+      <div>
+        <p class="section-label">Reference architecture</p>
+        <h2>A dialysis loop, not a still.</h2>
+        <div class="prose">
+          <p><strong>Wine loop:</strong> peristaltic pump → hollow-fiber lumen (or shell) → return to vessel. Gentle shear, food-grade tubing, optional chill plate at 8–15 °C.</p>
+          <p><strong>Strip loop:</strong> deionized or reverse-osmosis water on the opposite side of the hydrophobic membrane. Ethanol vapor/liquid equilibrium drives transfer across gas-filled pores. When strip ABV rises, dump or regenerate; home units may use single-use strip cartridges.</p>
+          <p><strong>Control:</strong> user selects target 0.5–5% ABV. Firmware estimates remaining ethanol from elapsed permeate/transfer model and confirms with a cheap density or NIR sensor before “done.”</p>
+          <p><strong>Industrial add-ons:</strong> strip distillation to recover ~40–55% ethanol co-product, CIP skid, parallel membrane racks, and aroma-management blending (hold-back of untreated wine).</p>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:2.5rem">
+        <h3>Go-to-market sketch</h3>
+        <div class="prose">
+          <p><strong>Phase 1 — Home:</strong> countertop 0.75–1.5 L batch for dinner-party “sessionable” pours (target 5%) and dry-January bottles (0.5%). Sell membranes + strip packs as consumables (razor/blade).</p>
+          <p><strong>Phase 2 — Prosumer / tasting rooms:</strong> 20–100 L day tanks for restaurants and boutique cellars.</p>
+          <p><strong>Phase 3 — Industrial OEM:</strong> license OD modules + control stack to major producers who already buy spinning-cone or RO systems—compete on aroma retention at ambient temperature and lower thermal OPEX.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="sources">
+    <div class="wrap">
+      <p class="section-label">References</p>
+      <h2>Literature behind the rates.</h2>
+      <ol class="sources">
+        <li><cite>Plata-Gryl et al.</cite> — Partial red wine dealcoholization with commercial PERVAP™ 4060. <em>Food and Bioproducts Processing</em> (2025). Flux 0.254–0.765 kg·m⁻²·h⁻¹; EtOH partial flux to 0.349 kg·m⁻²·h⁻¹ at 50 °C.</li>
+        <li><cite>Esteras-Saz et al.</cite> — PVDF / PP hollow-fiber OD for partial dealcoholization (−3% v/v). <em>Food and Bioproducts Processing</em> (2024). Ethanol flux 0.11–0.17 L·m⁻²·h⁻¹ at 11–15 °C.</li>
+        <li><cite>Versari et al.</cite> — OD kinetics to ~0.5% v/v ethanol; mass-transfer coefficients and strip-refresh strategy. University of Bologna / <em>J. Food Eng.</em> lineage (2024–25).</li>
+        <li><cite>Coronel et al.</cite> — Malbec PDMS pervaporation; total fluxes 1.02 / 1.38 / 1.82 kg·m⁻²·h⁻¹ at 35 / 40 / 45 °C.</li>
+        <li><cite>Comparative RO vs NF wine dealcoholization</cite> — <em>Membranes</em> (2026). RO ~1.1–1.9 L·m⁻²·h⁻¹; NF ~4–9 L·m⁻²·h⁻¹ at 25–35 bar.</li>
+        <li><cite>QY Research / Fact.MR / Growth Market Reports</cite> — Dealcoholized wine ~US$1.8–2.6B (2024); membrane dealcoholization equipment ~US$525M (2024).</li>
+      </ol>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <p class="brand-f">Vinora.</p>
+      <p>Scientific feasibility &amp; planning calculator for membrane wine dealcoholization. Not a substitute for pilot-plant validation, food-contact certification, or regulated labeling advice.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const TECH = {
+        od_pp: {
+          name: "OD · PP hollow fiber",
+          kind: "od",
+          j0: 0.12, // L ethanol / m² / h at mild cut
+          unit: "L·m⁻²·h⁻¹ ethanol",
+          note: "Hydrophobic PP contactor with water stripper—closest to a dialysis-style peristaltic loop. Literature: 0.11–0.13 L·m⁻²·h⁻¹ ethanol at 11–15 °C for a −3% ABV cut [2].",
+          memCostPerM2: 850,
+          pressureNote: "~0.1–1 bar recirculation"
+        },
+        od_pvdf: {
+          name: "OD · PVDF hollow fiber",
+          kind: "od",
+          j0: 0.17,
+          unit: "L·m⁻²·h⁻¹ ethanol",
+          note: "Superhydrophobic PVDF shows higher ethanol flux (~0.17 L·m⁻²·h⁻¹) and better aroma retention vs PP in head-to-head wine trials [2].",
+          memCostPerM2: 1200,
+          pressureNote: "~0.1–1 bar recirculation"
+        },
+        pv: {
+          name: "Pervaporation · PDMS",
+          kind: "pv",
+          j0: 0.22, // kg ethanol / m² / h mid-range (between 0.09–0.35)
+          unit: "kg·m⁻²·h⁻¹ ethanol",
+          note: "Organophilic PERVAP 4060 / PDMS: ethanol partial flux ~0.09–0.35 kg·m⁻²·h⁻¹ (20–50 °C) with vacuum permeate [1,4]. Needs vacuum pump—not only peristaltic feed.",
+          memCostPerM2: 2200,
+          pressureNote: "Feed recirculation + ~1–10 mbar permeate vacuum"
+        },
+        ro: {
+          name: "Reverse osmosis",
+          kind: "pressure",
+          j0: 1.5, // L permeate / m² / h
+          unit: "L·m⁻²·h⁻¹ permeate",
+          note: "Wine RO permeate flux ~1.1–1.9 L·m⁻²·h⁻¹ at 25–35 bar [5]. High pressure suits industrial skids; poor fit for a home appliance.",
+          memCostPerM2: 400,
+          pressureNote: "20–35 bar"
+        },
+        nf: {
+          name: "Nanofiltration",
+          kind: "pressure",
+          j0: 6.5,
+          unit: "L·m⁻²·h⁻¹ permeate",
+          note: "Wine NF permeate flux ~4–9 L·m⁻²·h⁻¹ [5]. Faster than RO; still high-pressure. Ethanol rejection is low, enabling diafiltration dealcoholization.",
+          memCostPerM2: 350,
+          pressureNote: "15–35 bar"
+        }
+      };
+
+      const els = {
+        scaleSeg: document.getElementById("scaleSeg"),
+        tech: document.getElementById("tech"),
+        techNote: document.getElementById("techNote"),
+        volume: document.getElementById("volume"),
+        volLabel: document.getElementById("volLabel"),
+        abvIn: document.getElementById("abvIn"),
+        abvInLabel: document.getElementById("abvInLabel"),
+        abvOut: document.getElementById("abvOut"),
+        abvOutLabel: document.getElementById("abvOutLabel"),
+        cycleTime: document.getElementById("cycleTime"),
+        timeLabel: document.getElementById("timeLabel"),
+        retailPrice: document.getElementById("retailPrice"),
+        priceLabel: document.getElementById("priceLabel"),
+        annualCap: document.getElementById("annualCap"),
+        capLabel: document.getElementById("capLabel"),
+        margin: document.getElementById("margin"),
+        marginLabel: document.getElementById("marginLabel"),
+        units: document.getElementById("units"),
+        unitsLabel: document.getElementById("unitsLabel"),
+        projects: document.getElementById("projects"),
+        projectsLabel: document.getElementById("projectsLabel"),
+        homePriceField: document.getElementById("homePriceField"),
+        indCapField: document.getElementById("indCapField"),
+        unitsField: document.getElementById("unitsField"),
+        projectsField: document.getElementById("projectsField"),
+        mEthanol: document.getElementById("mEthanol"),
+        mFlux: document.getElementById("mFlux"),
+        mArea: document.getElementById("mArea"),
+        mDerate: document.getElementById("mDerate"),
+        mInterp: document.getElementById("mInterp"),
+        processAssump: document.getElementById("processAssump"),
+        bRev: document.getElementById("bRev"),
+        bGross: document.getElementById("bGross"),
+        bCogs: document.getElementById("bCogs"),
+        bMem: document.getElementById("bMem"),
+        bMarket: document.getElementById("bMarket"),
+        costStack: document.getElementById("costStack")
+      };
+
+      let scale = "home";
+
+      function depthDerate(abvIn, abvOut) {
+        const delta = abvIn - abvOut;
+        // Mild trim (~2–3% points): full literature flux
+        // Deep to 0.5%: strip refresh + lower driving force
+        if (abvOut <= 1) return 0.55;
+        if (abvOut <= 2.5) return 0.68;
+        if (delta >= 8) return 0.72;
+        if (delta >= 5) return 0.85;
+        return 1.0;
+      }
+
+      function fmtMoney(n) {
+        if (n >= 1e6) return "$" + (n / 1e6).toFixed(2) + "M";
+        if (n >= 1e3) return "$" + Math.round(n).toLocaleString("en-US");
+        return "$" + n.toFixed(0);
+      }
+
+      function fmtNum(n, d) {
+        return n.toLocaleString("en-US", { maximumFractionDigits: d, minimumFractionDigits: d });
+      }
+
+      function syncScaleUI() {
+        const home = scale === "home";
+        els.homePriceField.style.display = home ? "" : "none";
+        els.unitsField.style.display = home ? "" : "none";
+        els.indCapField.style.display = home ? "none" : "";
+        els.projectsField.style.display = home ? "none" : "";
+
+        if (home) {
+          els.volume.min = 0.75;
+          els.volume.max = 5;
+          els.volume.step = 0.25;
+          if (Number(els.volume.value) > 5) els.volume.value = 1.5;
+        } else {
+          els.volume.min = 100;
+          els.volume.max = 20000;
+          els.volume.step = 100;
+          if (Number(els.volume.value) < 100) els.volume.value = 2000;
+        }
+      }
+
+      function industrialASP(capacityHl, area) {
+        // Base skid + area-driven membrane/module cost
+        const base = 120000 + Math.log10(Math.max(capacityHl, 100)) * 55000;
+        const mem = area * TECH[els.tech.value].memCostPerM2 * 2.8; // modules, housings, spares
+        return base + mem;
+      }
+
+      function compute() {
+        const tech = TECH[els.tech.value];
+        const V = Number(els.volume.value); // L
+        const c0 = Number(els.abvIn.value);
+        const cf = Number(els.abvOut.value);
+        const t = Number(els.cycleTime.value);
+        const derate = depthDerate(c0, cf);
+        const jEff = tech.j0 * derate;
+
+        let ethanolL = V * (c0 - cf) / 100;
+        let area, fluxLabel, ethanolLabel;
+
+        if (tech.kind === "od") {
+          // ethanol volume flux
+          area = ethanolL / (jEff * t);
+          fluxLabel = fmtNum(jEff, 3) + " " + tech.unit;
+          ethanolLabel = fmtNum(ethanolL, 3) + " L" + " <small>pure EtOH eq.</small>";
+        } else if (tech.kind === "pv") {
+          // ethanol mass flux; density ethanol ≈ 0.789 kg/L
+          const ethanolKg = ethanolL * 0.789;
+          area = ethanolKg / (jEff * t);
+          fluxLabel = fmtNum(jEff, 3) + " " + tech.unit;
+          ethanolLabel = fmtNum(ethanolKg, 3) + " kg" + " <small>(" + fmtNum(ethanolL, 3) + " L)</small>";
+        } else {
+          // RO/NF diafiltration: permeate volume ≈ V ln(c0/cf) for freely permeable ethanol
+          const vPerm = V * Math.log(c0 / cf);
+          area = vPerm / (jEff * t);
+          fluxLabel = fmtNum(jEff, 2) + " " + tech.unit;
+          ethanolLabel = fmtNum(ethanolL, 2) + " L EtOH · " + fmtNum(vPerm, 1) + " L permeate";
+        }
+
+        area = Math.max(area, 0.001);
+
+        els.techNote.textContent = tech.note + " Operating pressure regime: " + tech.pressureNote + ".";
+        els.volLabel.textContent = V >= 100 ? fmtNum(V, 0) + " L" : fmtNum(V, 2) + " L";
+        els.abvInLabel.textContent = fmtNum(c0, 1) + "%";
+        els.abvOutLabel.textContent = fmtNum(cf, 1) + "%";
+        els.timeLabel.textContent = fmtNum(t, 1) + " h";
+        els.priceLabel.textContent = "$" + Number(els.retailPrice.value).toLocaleString("en-US");
+        els.capLabel.textContent = Number(els.annualCap.value).toLocaleString("en-US") + " hL";
+        els.marginLabel.textContent = els.margin.value + "%";
+        els.unitsLabel.textContent = Number(els.units.value).toLocaleString("en-US");
+        els.projectsLabel.textContent = els.projects.value;
+
+        els.mEthanol.innerHTML = ethanolLabel;
+        els.mFlux.textContent = fluxLabel;
+        els.mArea.innerHTML = fmtNum(area, area >= 10 ? 1 : 3) + " <small>m²</small>";
+        els.mDerate.innerHTML = Math.round(derate * 100) + "% <small>of mild-cut flux</small>";
+
+        if (scale === "home") {
+          const moduleHint = area < 0.05 ? "compact cartridge" : area < 0.25 ? "countertop HF module" : "large home / prosumer module";
+          els.mInterp.textContent = "For a " + V + " L batch from " + c0 + "% → " + cf + "% ABV in " + t + " h, size ≈ " + fmtNum(area, 3) + " m² (" + moduleHint + "). " + tech.name + ".";
+        } else {
+          els.mInterp.textContent = "Batch design " + fmtNum(V, 0) + " L requires ≈ " + fmtNum(area, 2) + " m² active area at the selected cycle time. Parallel industrial contactors (e.g. 10–40 m² each) can meet continuous duty by staging.";
+        }
+
+        els.processAssump.textContent =
+          "Assumptions: constant effective flux after depth derating; OD strip water refreshed as needed; PV permeate concentrated in ethanol (~36–46 wt% in [1]); RO/NF modeled as ideal ethanol diafiltration. Real pilots should re-fit j0 on your wine matrix. Density of ethanol taken as 0.789 kg·L⁻¹ for PV mass conversion.";
+
+        // Business
+        const margin = Number(els.margin.value) / 100;
+        let revenue, cogsUnit, memCost, asp;
+
+        if (scale === "home") {
+          asp = Number(els.retailPrice.value);
+          const units = Number(els.units.value);
+          // COGS build-up
+          const pump = 45;
+          const sensors = 55;
+          const housing = 70;
+          const electronics = 90;
+          memCost = area * tech.memCostPerM2 + 40;
+          const labor = 60;
+          cogsUnit = pump + sensors + housing + electronics + memCost + labor;
+          // If margin slider implies different COGS, blend toward target margin for "planned" GP
+          const targetCogs = asp * (1 - margin);
+          const plannedCogs = 0.35 * cogsUnit + 0.65 * targetCogs;
+          revenue = asp * units;
+          const gross = revenue * margin;
+          els.bRev.textContent = fmtMoney(revenue);
+          els.bGross.textContent = fmtMoney(gross);
+          els.bCogs.textContent = fmtMoney(plannedCogs);
+          els.bMem.textContent = fmtMoney(memCost);
+          els.bMarket.textContent = "Home line Year-1 at " + units.toLocaleString("en-US") + " units × $" + asp.toLocaleString("en-US") + ". Consumables (strip packs + annual membrane) can add 15–25% attach rate—not included above.";
+
+          const parts = [
+            { name: "Membrane module", amt: memCost },
+            { name: "Electronics / UI", amt: electronics },
+            { name: "Housing / fluidics", amt: housing + pump },
+            { name: "Sensors", amt: sensors },
+            { name: "Assembly", amt: labor }
+          ];
+          renderStack(parts);
+        } else {
+          const cap = Number(els.annualCap.value);
+          const projects = Number(els.projects.value);
+          asp = industrialASP(cap, area);
+          memCost = area * tech.memCostPerM2 * 2.8;
+          cogsUnit = asp * (1 - margin);
+          revenue = asp * projects;
+          els.bRev.textContent = fmtMoney(revenue);
+          els.bGross.textContent = fmtMoney(revenue * margin);
+          els.bCogs.textContent = fmtMoney(cogsUnit);
+          els.bMem.textContent = fmtMoney(memCost);
+          els.bMarket.textContent = "Industrial ASP ≈ " + fmtMoney(asp) + " for ~" + cap.toLocaleString("en-US") + " hL/yr design point. " + projects + " projects → " + fmtMoney(revenue) + " revenue. Global membrane dealcoholization equipment market ~$525M (2024).";
+
+          const parts = [
+            { name: "Membrane & housings", amt: memCost },
+            { name: "Skid / pumps / valves", amt: asp * 0.28 },
+            { name: "Controls & sensors", amt: asp * 0.12 },
+            { name: "Engineering & install", amt: asp * 0.18 },
+            { name: "Other COGS", amt: Math.max(cogsUnit - memCost - asp * 0.58, asp * 0.05) }
+          ];
+          renderStack(parts);
+        }
+      }
+
+      function renderStack(parts) {
+        const max = Math.max(...parts.map((p) => p.amt));
+        els.costStack.innerHTML = parts.map((p) => {
+          const pct = Math.round((p.amt / max) * 100);
+          return '<div class="bar-row"><span>' + p.name + '</span><div class="bar-track"><div class="bar-fill" style="width:' + pct + '%"></div></div><span class="amt">' + fmtMoney(p.amt) + '</span></div>';
+        }).join("");
+      }
+
+      // Events
+      els.scaleSeg.querySelectorAll("button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          els.scaleSeg.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          scale = btn.dataset.scale;
+          syncScaleUI();
+          compute();
+        });
+      });
+
+      document.querySelectorAll(".tabs button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".tabs button").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          document.querySelectorAll(".tab-pane").forEach((p) => p.classList.remove("active"));
+          document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+        });
+      });
+
+      ["tech", "volume", "abvIn", "abvOut", "cycleTime", "retailPrice", "annualCap", "margin", "units", "projects"]
+        .forEach((id) => {
+          els[id].addEventListener("input", compute);
+          els[id].addEventListener("change", compute);
+        });
+
+      // Keep target <= start - 0.5
+      els.abvIn.addEventListener("input", () => {
+        if (Number(els.abvOut.value) > Number(els.abvIn.value) - 0.5) {
+          els.abvOut.value = Math.max(0.5, Number(els.abvIn.value) - 0.5);
+        }
+      });
+
+      syncScaleUI();
+      compute();
+    })();
+  </script>
+</body>
+</html>
